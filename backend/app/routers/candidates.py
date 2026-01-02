@@ -11,6 +11,8 @@ router = APIRouter()
 @router.post("/", response_description="Add new candidate", response_model=CandidateInDB)
 async def create_candidate(request: Request, candidate: CandidateCreate = Body(...)):
     candidate_dict = jsonable_encoder(candidate)
+    if "_id" in candidate_dict:
+        del candidate_dict["_id"]
     new_candidate = await request.app.mongodb["candidates"].insert_one(candidate_dict)
     created_candidate = await request.app.mongodb["candidates"].find_one({"_id": new_candidate.inserted_id})
     return created_candidate

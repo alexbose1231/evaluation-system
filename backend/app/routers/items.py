@@ -9,6 +9,8 @@ router = APIRouter()
 @router.post("/", response_description="Create a new evaluation item", status_code=status.HTTP_201_CREATED, response_model=ItemInDB)
 async def create_item(request: Request, item: ItemCreate = Body(...)):
     item_dict = jsonable_encoder(item)
+    if "_id" in item_dict:
+        del item_dict["_id"]
     new_item = await request.app.mongodb["items"].insert_one(item_dict)
     created_item = await request.app.mongodb["items"].find_one({"_id": new_item.inserted_id})
     created_item["_id"] = str(created_item["_id"]) # ObjectId 변환

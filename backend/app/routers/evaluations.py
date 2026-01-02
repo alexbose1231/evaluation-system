@@ -52,6 +52,8 @@ async def submit_evaluation(request: Request, result_data: ResultCreate = Body(.
     result_dict = jsonable_encoder(result_data)
     result_dict["created_at"] = datetime.utcnow().isoformat()
     result_dict["assessor_id"] = user_id # 로그인한 사용자로 강제 설정
+    if "_id" in result_dict:
+        del result_dict["_id"]
     
     # 결과 저장
     new_result = await request.app.mongodb["results"].insert_one(result_dict)

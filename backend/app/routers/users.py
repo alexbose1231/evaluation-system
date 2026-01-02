@@ -20,6 +20,8 @@ async def create_user(request: Request, user: UserCreate = Body(...)):
     
     new_user = UserInDB(**user_dict)
     new_user_dict = jsonable_encoder(new_user)
+    if "_id" in new_user_dict:
+        del new_user_dict["_id"]
     
     created_user = await request.app.mongodb["users"].insert_one(new_user_dict)
     
