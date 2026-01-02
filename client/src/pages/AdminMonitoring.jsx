@@ -51,7 +51,7 @@ const AdminMonitoring = () => {
               <TableCell sx={{ minWidth: 50, fontWeight: 'bold' }}>순번</TableCell>
               <TableCell sx={{ minWidth: 80, fontWeight: 'bold' }}>성명</TableCell>
               <TableCell sx={{ minWidth: 80, fontWeight: 'bold' }}>수험번호</TableCell>
-              {data.assessors.map(assessor => (
+              {data.assessors?.map(assessor => (
                 <TableCell key={assessor.id} align="center" sx={{ minWidth: 100 }}>
                   {assessor.name}
                 </TableCell>
@@ -59,14 +59,14 @@ const AdminMonitoring = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.candidates.map((cand) => (
+            {data.candidates?.map((cand) => (
               <TableRow key={cand.id} hover>
                 <TableCell>{cand.group}</TableCell>
                 <TableCell>{cand.sequence}</TableCell>
                 <TableCell>{cand.name}</TableCell>
                 <TableCell>{cand.employee_id}</TableCell>
-                {data.assessors.map(assessor => {
-                  const status = cand.assignments[assessor.id];
+                {data.assessors?.map(assessor => {
+                  const status = cand.assignments ? cand.assignments[assessor.id] : undefined;
                   return (
                     <TableCell key={assessor.id} align="center">
                       <Chip 
